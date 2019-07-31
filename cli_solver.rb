@@ -14,7 +14,7 @@ unless board.valid?
   exit(1)
 end
 
-until board.won? do
+until board.won?
   break unless Checks.pencil(board) ||
                Checks.group(board, :rows) ||
                Checks.group(board, :columns) ||
@@ -23,7 +23,7 @@ end
 
 puts "WON: #{board.won?}"
 puts "VALID: #{board.valid?}"
-puts ""
+puts ''
 
 (0..8).each do |y|
   (0..8).each do |x|
