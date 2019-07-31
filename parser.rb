@@ -15,7 +15,7 @@ module Sudoku
       [2, 0] => 6,
       [2, 1] => 7,
       [2, 2] => 8
-    }
+    }.freeze
 
     def self.grid(ind)
       case ind

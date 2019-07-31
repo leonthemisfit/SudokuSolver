@@ -21,7 +21,7 @@ module Sudoku
     end
 
     def values
-      vals = @squares.map { |square| square.value }
+      vals = @squares.map(&:value)
       vals.reject { |val| val.nil? || val.zero? }
     end
 

@@ -8,13 +8,9 @@ module Sudoku
       board.each do |square|
         next if square.constant? || square.complete?
 
-        if board.pencil_square(square)
-          changed = true
-        end
-
-        if square.check
-          changed = true
-        end
+        changed = changed ||
+                  board.pencil_square(square) ||
+                  square.check
       end
 
       changed
@@ -26,17 +22,33 @@ module Sudoku
       groups = board.public_send(group_name)
 
       groups.each do |grp|
-        grp.squares.each do |square|
-          next if square.constant? || square.complete?
+        changed = true if handle_group(grp)
+      end
 
-          pencils = (grp.squares - [square]).map { |sq| sq.pencil }.flatten.uniq
-          rem = square.pencil - pencils
+      changed
+    end
 
-          if rem.length == 1
-            board.set_value(square, rem[0])
-            changed = true
-          end
-        end
+    def self.handle_group(grp)
+      changed = false
+
+      grp.each do |square|
+        next if square.constant? || square.complete?
+
+        changed = true if handle_square(square, grp)
+      end
+
+      changed
+    end
+
+    def self.handle_square(square, grp)
+      changed = false
+
+      pencils = (grp.squares - [square]).map(&:pencil).flatten.uniq
+      rem = square.pencil - pencils
+
+      if rem.length == 1
+        square.value = rem[0]
+        changed = true
       end
 
       changed
