@@ -15,14 +15,10 @@ unless board.valid?
 end
 
 until board.won? do
-  changed = false
-
-  changed = true if Checks.pencil(board)
-  changed = true if Checks.group(board, :rows)
-  changed = true if Checks.group(board, :columns)
-  changed = true if Checks.group(board, :boxes)
-
-  break unless changed
+  break unless Checks.pencil(board) ||
+               Checks.group(board, :rows) ||
+               Checks.group(board, :columns) ||
+               Checks.group(board, :boxes)
 end
 
 puts "WON: #{board.won?}"
